@@ -1,13 +1,9 @@
 import Link from 'next/link';
-import { User, LogOut, Menu } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
 
-interface NavbarProps {
-    onMenuClick: () => void;
-}
-
-export function Navbar({ onMenuClick }: NavbarProps) {
+export function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
 
@@ -22,14 +18,8 @@ export function Navbar({ onMenuClick }: NavbarProps) {
     if (pathname === '/' || pathname === '/login' || pathname === '/signup') return null;
 
     return (
-        <header className="bg-white border-b border-brand-200 h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-50 shadow-sm">
-            <div className="flex items-center gap-3">
-                <button
-                    onClick={onMenuClick}
-                    className="p-2 -ml-2 text-gray-500 hover:text-brand-600 md:hidden transition-colors"
-                >
-                    <Menu size={24} />
-                </button>
+        <header className="bg-white border-b border-brand-200 h-16 flex items-center justify-between px-6 sticky top-0 z-50 shadow-sm">
+            <div className="flex items-center gap-2">
                 <Link href="/dashboard" className="flex items-center">
                     <span className="text-2xl font-bold bg-gradient-brand bg-clip-text text-transparent italic tracking-tighter">VaSa</span>
                 </Link>
