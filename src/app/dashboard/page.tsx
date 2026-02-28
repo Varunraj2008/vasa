@@ -11,7 +11,8 @@ export default async function DashboardPage() {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
-        redirect('/');
+        const errorMsg = authError?.message || "Session not found";
+        redirect(`/?error=${encodeURIComponent(errorMsg)}`);
     }
 
     // Fetch user profile data

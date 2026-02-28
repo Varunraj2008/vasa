@@ -15,12 +15,21 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const checkUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        router.push("/dashboard");
+      }
+    };
+    checkUser();
+
     const params = new URLSearchParams(window.location.search);
     const urlError = params.get('error');
     if (urlError) {
       setError(urlError);
     }
-  }, []);
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

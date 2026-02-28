@@ -32,8 +32,9 @@ export async function GET(request: Request) {
         if (!error) {
             return NextResponse.redirect(`${origin}${next}`)
         }
+        return NextResponse.redirect(`${origin}/?error=${encodeURIComponent(error.message)}`)
     }
 
-    // return the user to an error page with instructions
-    return NextResponse.redirect(`${origin}/?error=Could not authenticate with Google`)
+    // if "code" is missing
+    return NextResponse.redirect(`${origin}/?error=No authentication code received`)
 }
