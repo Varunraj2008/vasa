@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f5f3ff;
+  --foreground: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #f5f3ff; /* Enforce light theme */
+    --foreground: #111827;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-brand text-white font-medium py-2 px-4 rounded-lg shadow-md hover:opacity-90 transition-opacity;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-brand-100 p-6;
+  }
+  .input-field {
+    @apply w-full border border-brand-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white;
+  }
+}
