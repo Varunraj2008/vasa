@@ -30,11 +30,15 @@ export async function GET(request: Request) {
         )
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
-            return NextResponse.redirect(`${origin}${next}`)
+            const redirectUrl = `${origin}${next}`
+            console.log('Auth successful, redirecting to:', redirectUrl)
+            return NextResponse.redirect(redirectUrl)
         }
+        console.error('Auth code exchange error:', error.message)
         return NextResponse.redirect(`${origin}/?error=${encodeURIComponent(error.message)}`)
     }
 
     // if "code" is missing
+    console.error('No code found in search params')
     return NextResponse.redirect(`${origin}/?error=No authentication code received`)
 }
