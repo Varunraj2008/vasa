@@ -121,7 +121,7 @@ export default function VerificationModal({ initialPan, initialAadhaar, userId }
                     <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-xl border border-yellow-100">
                         <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                         <p className="text-[11px] text-yellow-800 leading-normal">
-                            Note: Verification usually takes up to 24 hours. For this demo, clicking "Upload" will instantly verify your account so you can see the dashboard.
+                            Note: Verification usually takes up to 24 hours. For this demo, clicking &quot;Upload&quot; will instantly verify your account so you can see the dashboard.
                         </p>
                     </div>
                 </div>
