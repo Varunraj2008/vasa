@@ -2,10 +2,6 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-    if (request.nextUrl.pathname.startsWith('/auth')) {
-        return NextResponse.next()
-    }
-
     let response = NextResponse.next({
         request: {
             headers: request.headers,
@@ -58,6 +54,8 @@ export async function middleware(request: NextRequest) {
         }
     )
 
+    // This will refresh session if expired - required for Server Components
+    // to have a valid session after redirect
     await supabase.auth.getUser()
 
     return response
