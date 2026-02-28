@@ -14,6 +14,17 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Check for error in URL params
+  const [paramsChecked, setParamsChecked] = useState(false);
+  if (!paramsChecked && typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    const urlError = params.get('error');
+    if (urlError) {
+      setError(urlError);
+    }
+    setParamsChecked(true);
+  }
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
