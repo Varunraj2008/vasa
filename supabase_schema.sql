@@ -9,6 +9,7 @@ CREATE TYPE app_status AS ENUM ('pending', 'accepted', 'rejected');
 CREATE TABLE profiles (
   id UUID REFERENCES auth.users(id) PRIMARY KEY,
   username TEXT,
+  full_name TEXT,
   email TEXT NOT NULL,
   avatar_url TEXT,
   role user_role DEFAULT 'worker',
@@ -188,8 +189,12 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email)
-  VALUES (new.id, new.email);
+  INSERT INTO public.profiles (id, email, full_name)
+  VALUES (
+    new.id, 
+    new.email, 
+    new.raw_user_meta_data->>'full_name'
+  );
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

@@ -20,7 +20,7 @@ export default async function DashboardPage() {
         .eq('id', user.id)
         .single();
 
-    const username = profile?.full_name || "User"; // Fallback to User
+    const username = profile?.full_name || user?.user_metadata?.full_name || "User"; // Fallback to User
 
     const cards = [
         {
