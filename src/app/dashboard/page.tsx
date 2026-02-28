@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Search, BookOpen, Users, Bell, AlertCircle, ArrowRight } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
+import VerificationModal from "@/components/VerificationModal";
 
 export default async function DashboardPage() {
     const supabase = createServerSupabaseClient();
