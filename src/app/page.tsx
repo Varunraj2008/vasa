@@ -17,9 +17,22 @@ export default function LoginPage() {
   useEffect(() => {
     const checkUser = async () => {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        router.push("/dashboard");
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+        // If we get a 403 error (user not found in DB but JWT exists), clear the session
+        if (userError && userError.status === 403) {
+          console.warn("Stale session detected, signing out...");
+          await supabase.auth.signOut();
+          setError("Your session has expired. Please log in again.");
+          return;
+        }
+
+        if (user) {
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        console.error("Error checking user:", err);
       }
     };
     checkUser();
@@ -56,14 +69,18 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     const supabase = createClient();
+    const redirectTo = `${window.location.origin}/auth/callback`;
+    console.log("Initiating Google login with redirectTo:", redirectTo);
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo,
       },
     });
 
     if (error) {
+      console.error("Google login error:", error.message);
       setError(error.message);
       setLoading(false);
     }

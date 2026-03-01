@@ -30,13 +30,21 @@ export async function GET(request: Request) {
                 },
             }
         )
-        const { error } = await supabase.auth.exchangeCodeForSession(code)
+        const { error, data } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
             const redirectUrl = `${origin}${next}`
-            console.log('Auth successful, redirecting to:', redirectUrl)
+            console.log('Auth successful for user:', data.user?.email)
+            console.log('Redirecting to:', redirectUrl)
             return NextResponse.redirect(redirectUrl)
         }
-        console.error('Auth code exchange error:', error.message)
+
+        console.error('Auth code exchange error:', error.message, error.status)
+
+        // If it's a stale session or specific auth error, try to sign out to clear cookies
+        if (error.status === 403 || error.status === 400) {
+            await supabase.auth.signOut()
+        }
+
         return NextResponse.redirect(`${origin}/?error=${encodeURIComponent(error.message)}`)
     }
 
